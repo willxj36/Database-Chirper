@@ -13,6 +13,7 @@ const AdminOptions: React.FC<RouteComponentProps> = ({ history }) => {
     useEffect(() => {
         (async () => {
             let currentChirp = await $.get(`${url}/${id}`);
+            console.log(currentChirp);
             setChirp(currentChirp);
         })();
     }, [id]);
@@ -20,23 +21,25 @@ const AdminOptions: React.FC<RouteComponentProps> = ({ history }) => {
     const handleEdit = async () => {
         let newName = $('#nameEdit').val();
         let newText = $('#textEdit').val();
-        await $.ajax({
+        let res = await $.ajax({
             type: 'PUT',
             url: `${url}/${id}`,
             contentType,
             data: JSON.stringify({
                 "name": newName,
-                "text": newText
+                "text": newText,
             })
         })
+        alert(res);
         history.goBack();
     }
 
     const handleDelete = async () => {
-        await $.ajax({
+        let res = await $.ajax({
             type: 'DELETE',
             url: `${url}/${id}`,
         })
+        alert(res);
         history.goBack();
     }
 

@@ -17,7 +17,8 @@ const NewChirpBox: React.FC<RouteComponentProps> = ({ history }) => {
             contentType,
             data: JSON.stringify({
                 "name": username,
-                "text": chirp
+                "text": chirp,
+                "location": "defaultLocation"
             })
         })
         setUserName('');
