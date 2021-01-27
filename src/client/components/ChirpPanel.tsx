@@ -11,24 +11,29 @@ const ChirpPanel = () => {
     const [chirpsDisplay, setChirpsDisplay] = useState([]);
 
     const chirpsHandle = () => {
-        let chirpArray = chirps.map(chirp => {
+        chirps.forEach(chirp => { //this function to test for and send to the database any user mentions
             const pattern: RegExp = /\B@[a-z0-9_-]+/gi;
             let mention: [] = chirp.text.match(pattern);
             if(mention) {
-                $.ajax({
-                    type: 'POST',
-                    url,
-                    contentType,
-                    data: JSON.stringify({
-                        "chirpid": chirp.id,
-                        "users": {...mention}
+                mention.forEach(async(userRaw: string) => {
+                    let user: string = userRaw.replace('@', '');
+                    await $.ajax({
+                        type: 'POST',
+                        url,
+                        contentType,
+                        data: JSON.stringify({
+                            "chirpid": chirp.id,
+                            "user": user
+                        })
                     })
                 })
             }
+        })
+        let chirpArray = chirps.map(chirp => { //creates array to display cards
             return(
                 <div className="card border border-success shadow rounded m-4" key={chirp.id} id={chirp.id}>
                     <div className="card-body">
-                        <h2 className="card-title">@{chirp.name}</h2>
+                        <h2 onClick={() => seeMentions(chirp.name)} className="card-title">@{chirp.name}</h2>
                         <p className="card-text">{chirp.text}</p>
                     </div>
                     <div className="card-footer">
@@ -38,6 +43,14 @@ const ChirpPanel = () => {
             )
         });
         setChirpsDisplay(chirpArray);
+    }
+
+    const seeMentions = async (name: string) => { //click handler for seeing user mentions
+        let res = await $.get(`/api/mentions/${name}`);
+        res.forEach(mention => {
+            alert(`${mention.name}
+                ${mention.text}`); //terrible UX but thrown in to get functionality going before I have to go to bed... may change to something nice like a modal later
+        })
     }
 
     useEffect(() => {
@@ -58,10 +71,6 @@ const ChirpPanel = () => {
             {chirpsDisplay}
         </div>
     )
-}
-
-interface ChirpPanelProps {
-    chirps: [string, {name: string, text: string}][];
 }
 
 export default ChirpPanel

@@ -18,7 +18,6 @@ const AdminOptions: React.FC<RouteComponentProps> = ({ history }) => {
     }, [id]);
 
     const handleEdit = async () => {
-        //have to check for mentions here
         let newName = $('#nameEdit').val();
         let newText = $('#textEdit').val();
         let res = await $.ajax({
