@@ -28,7 +28,6 @@ const ChirpPanel = () => {
 		(async () => {
 			try {
                 let chirps = await $.get('/api/chirps');
-                console.log(chirps);
 				setChirps(chirps);
 			} catch (error) {
 				console.log(error);

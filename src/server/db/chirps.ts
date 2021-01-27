@@ -1,8 +1,20 @@
 import { Query } from './index';
 
-const all = async () => Query('SELECT c.id, u.name, c.text FROM chirps c JOIN users u ON c.userid = u.id ORDER BY id DESC');
+const all = async () => {
+    try{
+        Query('SELECT c.id, u.name, c.text FROM chirps c JOIN users u ON c.userid = u.id ORDER BY id DESC');
+    } catch(e) {
+        console.log(e);
+    }
+}
 
-const one = async (id: string) => Query('SELECT c.id, u.name, c.text FROM chirps c JOIN users u ON c.userid = u.id WHERE c.id = ?', [id]);
+const one = async (id: string) => {
+    try{
+        Query('SELECT c.id, u.name, c.text FROM chirps c JOIN users u ON c.userid = u.id WHERE c.id = ?', [id]);
+    } catch(e) {
+        console.log(e);
+    }
+}
 
 const post = async (name: string, text: string, location: string) => {
     try {
