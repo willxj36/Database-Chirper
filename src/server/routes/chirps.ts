@@ -6,8 +6,8 @@ router.get('/:id?', async (req, res) => {
     try {
         let id: string = req.params.id;
         if(id) {
-            let chirp = await db.Chirps.one(id);
-            res.send(chirp[0]);
+            let oneChirp = await db.Chirps.one(id);
+            res.send(oneChirp[0]);
         } else {
             let chirps = await db.Chirps.all();
             res.send(chirps);

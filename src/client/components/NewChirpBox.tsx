@@ -3,7 +3,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import $ from 'jquery';
 
 const url = 'http://localhost:3000/api/chirps';
-const urlMentions = 'http://localhost:3000/api/mentions';
 const contentType = 'application/json; charset=UTF-8';
 
 const NewChirpBox: React.FC<RouteComponentProps> = ({ history }) => {
@@ -12,7 +11,6 @@ const NewChirpBox: React.FC<RouteComponentProps> = ({ history }) => {
     const [chirp, setChirp] = useState('');
 
     const submitChirp = () => {
-        //have to check for mentions here
         $.ajax({
             type: 'POST',
             url,

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
 
+const url = 'http://localhost:3000/api/mentions';
+const contentType = 'application/json; charset=UTF-8';
+
 const ChirpPanel = () => {
 
     const [chirps, setChirps] = useState([]);
@@ -9,6 +12,19 @@ const ChirpPanel = () => {
 
     const chirpsHandle = () => {
         let chirpArray = chirps.map(chirp => {
+            const pattern: RegExp = /\B@[a-z0-9_-]+/gi;
+            let mention: [] = chirp.text.match(pattern);
+            if(mention) {
+                $.ajax({
+                    type: 'POST',
+                    url,
+                    contentType,
+                    data: JSON.stringify({
+                        "chirpid": chirp.id,
+                        "users": {...mention}
+                    })
+                })
+            }
             return(
                 <div className="card border border-success shadow rounded m-4" key={chirp.id} id={chirp.id}>
                     <div className="card-body">
